@@ -8,16 +8,18 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MediaPlayer player;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MediaPlayer player = MediaPlayer.create(this, R.raw.fun_audio);
-        addPlayerButtonsListeners(player);
+        player = MediaPlayer.create(this, R.raw.fun_audio);
+        addPlayerButtonsListeners();
     }
 
-    private void addPlayerButtonsListeners(MediaPlayer player) {
+    private void addPlayerButtonsListeners() {
         Button start = findViewById(R.id.start_button);
         Button pause = findViewById(R.id.pause_button);
 
