@@ -28,4 +28,13 @@ public class MainActivity extends AppCompatActivity {
         start.setOnClickListener(caughtEvent -> player.start());
         pause.setOnClickListener(caughtEvent -> player.pause());
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(player != null) {
+            player.release();
+            player = null;
+        }
+    }
 }
