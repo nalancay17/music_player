@@ -10,15 +10,21 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer player;
+    private final MediaPlayer.OnCompletionListener listener = completion -> Toast.makeText(this, "I'm done", Toast.LENGTH_SHORT).show();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         player = MediaPlayer.create(this, R.raw.fun_audio);
         addPlayerButtonsListeners();
-        player.setOnCompletionListener(completion -> Toast.makeText(this, "I'm done", Toast.LENGTH_SHORT).show());
+        player.setOnCompletionListener(listener);
     }
 
     private void addPlayerButtonsListeners() {
