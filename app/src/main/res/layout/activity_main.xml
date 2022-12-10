@@ -22,4 +22,16 @@
         android:layout_height="wrap_content"
         android:text="@string/pause" />
 
+    <Button
+        android:id="@+id/add_three_sec_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_three_seg" />
+
+    <Button
+        android:id="@+id/subtract_three_sec_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subtract_three_seg" />
+
 </LinearLayout>

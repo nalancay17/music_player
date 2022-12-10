@@ -3,4 +3,6 @@
 
     <string name="start">Start</string>
     <string name="pause">Pause</string>
+    <string name="add_three_seg">+3 sec</string>
+    <string name="subtract_three_seg">-3 sec</string>
 </resources>
