@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer player;
     private final MediaPlayer.OnCompletionListener listener = completion -> Toast.makeText(this, "I'm done", Toast.LENGTH_SHORT).show();
-    private final Handler hn = new Handler();
+    private final Handler handler = new Handler();
     private SeekBar musicSeekBar;
 
     @Override
@@ -72,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                musicSeekBar.setProgress(player.getCurrentPosition());
-                hn.postDelayed(this, 1);
+                if(player.isPlaying()) {
+                    musicSeekBar.setProgress(player.getCurrentPosition());
+                    handler.post(this);
+                }
             }
         });
     }
