@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer player;
     private final MediaPlayer.OnCompletionListener listener = completion -> Toast.makeText(this, "I'm done", Toast.LENGTH_SHORT).show();
     private final Handler hn = new Handler();
+    private SeekBar musicSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +25,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        player = MediaPlayer.create(this, R.raw.fun_audio);
-        addPlayerButtonsListeners();
-        player.setOnCompletionListener(listener);
+        initializePlayer();
+        initializeSeekBar();
     }
 
     @Override
@@ -36,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
             player.release();
             player = null;
         }
+    }
+
+    private void initializePlayer() {
+        player = MediaPlayer.create(this, R.raw.fun_audio);
+        addPlayerButtonsListeners();
+        player.setOnCompletionListener(listener);
+    }
+
+    private void initializeSeekBar() {
+        musicSeekBar = findViewById(R.id.music_seekbar);
+        musicSeekBar.setMax(player.getDuration());
+        musicSeekBar.setOnSeekBarChangeListener(createSeekBarChangeListener());
     }
 
     private void addPlayerButtonsListeners() {
@@ -57,14 +69,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startSeekBar() {
-        SeekBar sb = findViewById(R.id.music_seekbar);
-        sb.setMax(player.getDuration());
-        sb.setOnSeekBarChangeListener(createSeekBarChangeListener());
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                sb.setProgress(player.getCurrentPosition());
+                musicSeekBar.setProgress(player.getCurrentPosition());
                 hn.postDelayed(this, 1);
             }
         });
