@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void startSeekBar() {
         SeekBar sb = findViewById(R.id.music_seekbar);
         sb.setMax(player.getDuration());
+        sb.setOnSeekBarChangeListener(createSeekBarChangeListener());
 
         runOnUiThread(new Runnable() {
             @Override
@@ -67,5 +68,26 @@ public class MainActivity extends AppCompatActivity {
                 hn.postDelayed(this, 1);
             }
         });
+    }
+
+    private SeekBar.OnSeekBarChangeListener createSeekBarChangeListener() {
+        return new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (player != null  && fromUser) {
+                    player.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        };
     }
 }
