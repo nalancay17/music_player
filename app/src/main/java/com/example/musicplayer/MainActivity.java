@@ -72,10 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
     private SeekBar.OnSeekBarChangeListener createSeekBarChangeListener() {
         return new SeekBar.OnSeekBarChangeListener() {
+            int progress;
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (player != null  && fromUser) {
-                    player.seekTo(progress);
+                    this.progress = progress;
                 }
             }
 
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                player.seekTo(progress);
             }
         };
     }
