@@ -34,4 +34,10 @@
         android:layout_height="wrap_content"
         android:text="@string/subtract_three_seg" />
 
+    <SeekBar
+        android:id="@+id/music_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
 </LinearLayout>
