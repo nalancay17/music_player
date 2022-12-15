@@ -2,7 +2,11 @@ package com.example.musicplayer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -36,10 +40,18 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private AudioManager audioManager;
+    private final AudioAttributes attributes = new AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+            .build();
+    private int requestResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
     }
 
     @Override
@@ -77,14 +89,27 @@ public class MainActivity extends AppCompatActivity {
         Button subThreeSec = findViewById(R.id.subtract_three_sec_button);
 
         start.setOnClickListener(caughtEvent -> {
-            player.start();
-            startSeekBar();
+            makeFocusRequest();
+            if (requestResult == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                player.start();
+                startSeekBar();
+            }
         });
         pause.setOnClickListener(caughtEvent -> player.pause());
 
         if (player != null) {
             addThreeSec.setOnClickListener(caughtEvent -> player.seekTo(player.getCurrentPosition() + 1000 * 3));
             subThreeSec.setOnClickListener(caughtEvent -> player.seekTo(player.getCurrentPosition() - 1000 * 3));
+        }
+    }
+
+    private void makeFocusRequest() {
+        // request for api level >= 26
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            AudioFocusRequest focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(attributes)
+                    .build();
+            requestResult = audioManager.requestAudioFocus(focusRequest);
         }
     }
 
