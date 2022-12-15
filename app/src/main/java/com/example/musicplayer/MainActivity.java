@@ -15,6 +15,26 @@ public class MainActivity extends AppCompatActivity {
     private final MediaPlayer.OnCompletionListener listener = completion -> Toast.makeText(this, "I'm done", Toast.LENGTH_SHORT).show();
     private final Handler handler = new Handler();
     private SeekBar musicSeekBar;
+    private final SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        int progress;
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (player != null && fromUser) {
+                this.progress = progress;
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            player.seekTo(progress);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeSeekBar() {
         musicSeekBar = findViewById(R.id.music_seekbar);
         musicSeekBar.setMax(player.getDuration());
-        musicSeekBar.setOnSeekBarChangeListener(createSeekBarChangeListener());
+        musicSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
     }
 
     private void addPlayerButtonsListeners() {
@@ -72,34 +92,11 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(player.isPlaying()) {
+                if (player.isPlaying()) {
                     musicSeekBar.setProgress(player.getCurrentPosition());
                     handler.post(this);
                 }
             }
         });
-    }
-
-    private SeekBar.OnSeekBarChangeListener createSeekBarChangeListener() {
-        return new SeekBar.OnSeekBarChangeListener() {
-            int progress;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (player != null  && fromUser) {
-                    this.progress = progress;
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                player.seekTo(progress);
-            }
-        };
     }
 }
