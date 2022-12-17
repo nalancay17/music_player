@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             .setUsage(AudioAttributes.USAGE_MEDIA)
             .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
             .build();
+    private AudioFocusRequest focusRequest;
     private int requestResult;
 
     @Override
@@ -67,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         if (player != null) {
             player.release();
             player = null;
+        }
+        if (focusRequest != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                audioManager.abandonAudioFocusRequest(focusRequest);
+            }
         }
     }
 
@@ -106,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     private void makeFocusRequest() {
         // request for api level >= 26
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            AudioFocusRequest focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+            focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
                     .setAudioAttributes(attributes)
                     .build();
             requestResult = audioManager.requestAudioFocus(focusRequest);
