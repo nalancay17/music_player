@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (player.isPlaying()) {
+                if (player != null && player.isPlaying()) {
                     musicSeekBar.setProgress(player.getCurrentPosition());
                     handler.post(this);
                 }
